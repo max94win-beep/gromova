@@ -66,6 +66,11 @@ baseline = json.load(open(BASE)) if os.path.exists(BASE) else None
 if baseline is None:
     baseline = {f'{s}.{k}': r for (s, k), r in imagerefs.items()}
     json.dump(baseline, open(BASE, 'w'), indent=1); print('создана базовая линия картинок:', len(baseline))
+new_keys = [f'{s}.{k}' for (s, k) in imagerefs if f'{s}.{k}' not in baseline]
+if new_keys:   # впервые увиденные картинки (новый импорт) — тоже базовая линия, не экспортируем
+    for (s, k), r in imagerefs.items():
+        baseline.setdefault(f'{s}.{k}', r)
+    json.dump(baseline, open(BASE, 'w'), indent=1); print('в базовую линию добавлено картинок:', len(new_keys))
 images = {sk: nid for sk, nid in images.items() if baseline.get(f'{sk[0]}.{sk[1]}') != imagerefs[sk]}
 print('картинок к экспорту (заменённых в Figma):', len(images))
 
