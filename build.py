@@ -13,7 +13,12 @@ NAV_FILES = ['novinki.html', 'bestsellery.html', 'katalog.html', 'pokupatelyam.h
 NAV = [(T('nav', f'{i+1}.label'), NAV_FILES[i], 'red' if i == 0 else '') for i in range(5)]
 CATS = ['Платья', 'Вечерние платья', 'Блузы и топы', 'Трикотаж', 'Юбки', 'Брюки', 'Жакеты и пальто', 'Курортная коллекция', 'Свадебная линия', 'Для дома']
 CARDS = [(T('cards', f'{i+1}.name'), T('cards', f'{i+1}.price'), I('cards', f'{i+1}.image')) for i in range(12)]
-IG = C.get('home', {}).get('ig.images', []) or [c[2] for c in CARDS[:6]]
+IG = list(C.get('home', {}).get('ig.images', []) or [c[2] for c in CARDS[:6]])
+for _i in range(6):                                   # из Figma приходят ig.image.1 … ig.image.6
+    _v = C.get('home', {}).get(f'ig.image.{_i+1}')
+    if _v:
+        while len(IG) <= _i: IG.append(_v)
+        IG[_i] = _v
 POOL = [c[2] for c in CARDS] + list(IG)
 LOGO = T('site', 'logo', 'Gromova')
 

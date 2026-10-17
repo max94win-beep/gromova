@@ -39,9 +39,11 @@ def walk(node, section):
         return
     key = name
     if key.startswith(section + '.'): key = key[len(section) + 1:]
-    if t == 'TEXT' and re.match(r'^[\w.\-]+$', key):
+    if key.startswith('_'):            # служебные подписи (_label, _title, _hint)
+        pass
+    elif t == 'TEXT' and re.match(r'^[\w.\-]+$', key):
         texts[(section, key)] = node.get('characters', '').strip()
-    elif t in ('RECTANGLE', 'FRAME', 'ELLIPSE', 'VECTOR') and key.endswith('.image') or key.endswith('image'):
+    elif re.search(r'(^|\.)image(\.\d+)?$', key):   # hero.image, block.1.image, ig.image.3
         if any(f.get('type') == 'IMAGE' for f in node.get('fills', []) if isinstance(f, dict)):
             images[(section, key)] = node['id']
     for ch in node.get('children', []): walk(ch, section)
