@@ -1,0 +1,15 @@
+{
+ "name": "Gromova CMS: создать структуру",
+ "id": "gromova-cms-structure",
+ "api": "1.0.0",
+ "main": "code.js",
+ "editorType": [
+  "figma"
+ ],
+ "networkAccess": {
+  "allowedDomains": [
+   "*"
+  ],
+  "reasoning": "загрузка текущих фото сайта в макет"
+ }
+}
