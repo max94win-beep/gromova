@@ -44,12 +44,24 @@ def walk(node, section):
     elif t == 'TEXT' and re.match(r'^[\w.\-]+$', key):
         texts[(section, key)] = node.get('characters', '').strip()
     elif re.search(r'(^|\.)image(\.\d+)?$', key):   # hero.image, block.1.image, ig.image.3
-        if any(f.get('type') == 'IMAGE' for f in node.get('fills', []) if isinstance(f, dict)):
-            images[(section, key)] = node['id']
+        refs = [f.get('imageRef') for f in node.get('fills', []) if isinstance(f, dict) and f.get('type') == 'IMAGE']
+        if refs:
+            images[(section, key)] = node['id']; imagerefs[(section, key)] = refs[0]
     for ch in node.get('children', []): walk(ch, section)
 
+imagerefs = {}
 for page in doc['document'].get('children', []): walk(page, None)
 print(f'Figma: текстов {len(texts)}, картинок {len(images)}; версия файла {doc.get("version")} от {doc.get("lastModified")}')
+
+# Базовая линия: картинки, вставленные при первичном импорте (временные фото образца), не экспортируем.
+# Экспортируется только картинка, которую в Figma заменили (изменился imageRef).
+BASE = os.path.join(HERE, 'figma_baseline.json')
+baseline = json.load(open(BASE)) if os.path.exists(BASE) else None
+if baseline is None:
+    baseline = {f'{s}.{k}': r for (s, k), r in imagerefs.items()}
+    json.dump(baseline, open(BASE, 'w'), indent=1); print('создана базовая линия картинок:', len(baseline))
+images = {sk: nid for sk, nid in images.items() if baseline.get(f'{sk[0]}.{sk[1]}') != imagerefs[sk]}
+print('картинок к экспорту (заменённых в Figma):', len(images))
 
 changed = 0
 for (sec, key), val in texts.items():
