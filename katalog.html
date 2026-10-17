@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Каталог — Gromova</title>
+<meta name="description" content="Gromova: каталог. Макет страницы.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap">
+<style>
+:root{--bg:#f7f5f1;--fg:#1e1f1d;--muted:#6f6c66;--line:#d9d4cb;--ph:#e6e1d8;--ph2:#d3ccc0;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;--sans:Jost,"Helvetica Neue",Arial,sans-serif;--gutter:clamp(16px,4vw,56px)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:.01em;text-wrap:balance;margin:0}
+.wrap{padding-inline:var(--gutter)}
+.cap{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:400}
+.ann{background:var(--fg);color:var(--bg);text-align:center;padding:9px var(--gutter);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+header{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.hd{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:18px var(--gutter) 10px}
+.hd .left,.hd .right{display:flex;gap:22px;align-items:center}
+.hd .right{justify-content:flex-end}
+.logo{font-family:var(--serif);font-size:34px;letter-spacing:.32em;text-transform:uppercase;font-weight:500;padding-left:.32em}
+.ico{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:none;border:0;color:inherit;cursor:pointer;font-family:inherit;padding:0}
+.ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.3}
+nav.main{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding:6px var(--gutter) 16px}
+nav.main a{font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:4px 0;border-bottom:1px solid transparent}
+nav.main a:hover,nav.main a.active{border-color:var(--fg)}
+nav.main a.red{color:#b3261e}
+.burger{display:none}
+@media (max-width:860px){nav.main{display:none}nav.main.open{display:flex;flex-direction:column;gap:14px;align-items:center;padding-bottom:22px}.burger{display:inline-flex}.logo{font-size:24px}.hd .left .txt,.hd .right .txt{display:none}}
+.ph{position:relative;background:linear-gradient(135deg,var(--ph),var(--ph2)) center/cover no-repeat;overflow:hidden;color:var(--muted);display:block}
+.ph::after{content:attr(data-label);position:absolute;inset:auto 10px 10px auto;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:rgba(247,245,241,.7);padding:2px 6px}
+.ph.r169{aspect-ratio:2880/1770}.ph.r23{aspect-ratio:2/3}.ph.r11{aspect-ratio:1/1}.ph.r43{aspect-ratio:4/3}.ph.r21{aspect-ratio:21/9}
+.hero{position:relative}
+.hero .txt{position:absolute;left:0;right:0;bottom:clamp(24px,8vh,80px);text-align:center;color:var(--fg)}
+.hero h1{font-size:clamp(34px,5.4vw,66px);margin-bottom:14px}
+.btn{display:inline-block;border:1px solid var(--fg);padding:11px 26px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;background:rgba(247,245,241,.75);backdrop-filter:blur(2px)}
+.btn:hover,.btn.solid{background:var(--fg);color:var(--bg)}
+section{padding-block:clamp(36px,6vw,72px)}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:22px}
+.sec-head h2{font-size:clamp(22px,2.6vw,32px);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.arrows{display:flex;gap:8px}
+.arrows button{width:38px;height:38px;border:1px solid var(--line);background:none;cursor:pointer;color:inherit;display:grid;place-items:center}
+.arrows button:hover{border-color:var(--fg)}
+.car{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 3*18px)/4);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+.car::-webkit-scrollbar{display:none}
+.card{scroll-snap-align:start;min-width:0;display:block}
+.card .name{font-size:13px;margin-top:12px;font-weight:400;letter-spacing:.02em}
+.card .price{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin-top:3px}
+.card .sizes{display:flex;gap:10px;font-size:10px;letter-spacing:.1em;color:var(--muted);margin-top:8px}
+.card .tag{position:absolute;left:10px;top:10px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--bg);padding:3px 8px}
+@media (max-width:1100px){.car{grid-auto-columns:calc((100% - 2*18px)/3)}}
+@media (max-width:760px){.car{grid-auto-columns:calc((100% - 18px)/2)}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.two .cell{position:relative}
+.two .cell .txt{position:absolute;left:0;right:0;bottom:clamp(20px,5vw,48px);text-align:center}
+.two h2{font-size:clamp(24px,3vw,40px);margin-bottom:12px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.follow{text-align:center}
+.follow h2{font-size:clamp(20px,2.2vw,28px);text-transform:uppercase;letter-spacing:.14em;margin-bottom:6px}
+.follow .handle{color:var(--muted);letter-spacing:.14em;font-size:12px;margin-bottom:22px}
+.ig{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+@media (max-width:760px){.ig{grid-template-columns:repeat(3,1fr)}}
+/* страницы разделов */
+.crumbs{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:22px}
+.crumbs a:hover{color:var(--fg)}
+.page-head{padding-block:28px 10px}
+.page-head h1{font-size:clamp(30px,4vw,52px)}
+.page-head p{max-width:62ch;color:var(--muted);margin:10px 0 0}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:22px 0 26px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.toolbar .filters{display:flex;gap:22px;flex-wrap:wrap}
+.toolbar .filters button{background:none;border:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;padding:0}
+.toolbar select{border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 18px}
+.grid .card .ph{position:relative}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.grid{grid-template-columns:repeat(2,1fr);gap:14px 10px}}
+.pager{display:flex;justify-content:center;gap:18px;margin-top:40px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.pager a.cur{border-bottom:1px solid var(--fg)}
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.cats a{position:relative;display:block}
+.cats .lbl{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-family:var(--serif);font-size:22px;background:linear-gradient(transparent,rgba(247,245,241,.85) 40%);padding:30px 8px 0}
+@media (max-width:1100px){.cats{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:620px){.cats{grid-template-columns:repeat(2,1fr)}}
+.info{display:grid;grid-template-columns:220px 1fr;gap:48px;align-items:start}
+.info aside{position:sticky;top:140px;display:grid;gap:12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.info aside a:hover{text-decoration:underline}
+.info article{max-width:68ch}
+.info h2{font-size:28px;margin:46px 0 14px;scroll-margin-top:150px}
+.info h2:first-child{margin-top:0}
+.info p,.info li{color:#3a3935}
+.info table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums;margin:10px 0}
+.info th,.info td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left}
+.info th{font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+details{border-bottom:1px solid var(--line);padding:12px 0}
+summary{cursor:pointer;font-weight:400;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"+";font-size:18px;line-height:1}
+details[open] summary::after{content:"–"}
+@media (max-width:860px){.info{grid-template-columns:1fr}.info aside{position:static;grid-template-columns:repeat(2,1fr)}}
+.about-hero{position:relative}
+.about-hero .txt{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.about-hero h1{font-size:clamp(36px,6vw,80px);color:var(--bg);text-shadow:0 1px 20px rgba(0,0,0,.25)}
+.lead{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);max-width:34ch;margin:0 auto;text-align:center;line-height:1.35}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
+.split.rev .ph{order:2}
+.split h2{font-size:clamp(26px,3vw,40px);margin-bottom:14px}
+.split p{color:#3a3935;max-width:52ch}
+@media (max-width:760px){.split{grid-template-columns:1fr}.split.rev .ph{order:0}}
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;text-align:center}
+.values h3{font-size:22px;margin-bottom:8px}
+.values p{color:var(--muted);font-size:14px;margin:0}
+@media (max-width:760px){.values{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;font-size:12px}
+.fgrid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1.4fr;gap:32px}
+.fgrid h3{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:14px}
+.fgrid ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.fgrid a:hover{text-decoration:underline}
+.news form{display:flex;border-bottom:1px solid var(--fg);margin-top:10px}
+.news input{flex:1;border:0;background:none;padding:10px 0;font:inherit;color:inherit;outline:none;min-width:0}
+.news button{border:0;background:none;font:inherit;letter-spacing:.18em;text-transform:uppercase;font-size:11px;cursor:pointer;color:inherit}
+.news p{color:var(--muted);margin:14px 0 0}
+.fbot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted)}
+.fbot .soc{display:flex;gap:18px;letter-spacing:.14em;text-transform:uppercase;font-size:10px}
+.fbot select{border:1px solid var(--line);background:none;font:inherit;padding:6px 10px;color:inherit}
+@media (max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.fgrid{grid-template-columns:1fr}}
+.draft{position:fixed;left:12px;bottom:12px;z-index:30;background:#fff;border:1px solid var(--line);padding:6px 10px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="ann">Осень-зима 2026: новая коллекция уже в продаже</div>
+<header>
+  <div class="hd">
+    <div class="left">
+      <button class="ico burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span class="txt">Меню</span></button>
+      <a class="ico" href="katalog.html"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="txt">Поиск</span></a>
+    </div>
+    <a class="logo" href="index.html">Gromova</a>
+    <div class="right">
+      <a class="ico" href="#"><span class="txt">RU / ₽</span></a>
+      <a class="ico" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg><span class="txt">Аккаунт</span></a>
+      <a class="ico" href="#"><svg viewBox="0 0 24 24"><path d="M6 8h12l1 13H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="txt">Корзина (0)</span></a>
+    </div>
+  </div>
+  <nav class="main" id="nav">
+    <a href="novinki.html" class="red">Новинки</a>
+    <a href="bestsellery.html" class="">Бестселлеры</a>
+    <a href="katalog.html" class="active">Каталог</a>
+    <a href="pokupatelyam.html" class="">Покупателям</a>
+    <a href="o-brende.html" class="">О бренде</a>
+    </nav>
+</header>
+<main class="wrap">
+  <div class="crumbs"><a href="index.html">Главная</a> &nbsp;/&nbsp; Каталог</div>
+  <div class="page-head"><h1>Каталог</h1><p>Все линии Gromova: от повседневных платьев до вечерних и свадебной коллекции. Выберите раздел или смотрите все модели ниже.</p></div>
+  <section style="padding-top:18px"><div class="cats"><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Celeste_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_2048x2048.jpg?v=1790847160)"></div><div class="lbl">Платья</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Rain_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_Front_View_2048x2048.jpg?v=1786542401)"></div><div class="lbl">Вечерние платья</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/9525_3_2048x2048.jpg?v=1788448111)"></div><div class="lbl">Блузы и топы</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Harlow_Dress_in_Silver_Metallic_Cloque_Front_View_2048x2048.jpg?v=1786542522)"></div><div class="lbl">Трикотаж</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Eagle_Dress_in_Green_Velvet_2048x2048.jpg?v=1790676968)"></div><div class="lbl">Юбки</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Nodin_Dress_in_Green_Velvet_Front_View_2048x2048.jpg?v=1786543195)"></div><div class="lbl">Брюки</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Wickstead_AW26_LOOK_20_2048x2048.jpg?v=1773923676)"></div><div class="lbl">Жакеты и пальто</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Emilia_Wickstead_AW26_Commercial_Looks-6602009_12b4266c-cee3-4a38-8743-3ad3ae7ced55_2048x2048.jpg?v=1773931943)"></div><div class="lbl">Курортная коллекция</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Rain_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_Emilia_Wickstead_2048x2048.jpg?v=1787225031)"></div><div class="lbl">Свадебная линия</div></a><a href="novinki.html"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/preview_images/9e8c87ae90794d5185c0a2594c944f7c.thumbnail.0000000000_small.jpg?v=1791802720)"></div><div class="lbl">Для дома</div></a></div></section>
+  <section style="padding-top:0">
+    <div class="sec-head"><h2>Все модели</h2><a class="cap" href="novinki.html">Смотреть новинки →</a></div>
+    <div class="toolbar"><div class="filters"><button>Категория</button><button>Размер</button><button>Цвет</button><button>Цена</button></div><div>120 товаров &nbsp;·&nbsp; <select aria-label="Сортировка"><option>Рекомендуемые</option><option>Сначала новые</option><option>По цене</option></select></div></div>
+    <div class="grid">
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Lorelei_Skirt_in_Red_Black_Breezy_Poppy_Mikado_2048x2048.jpg?v=1790846994)"></div><div class="name">Платье «Название 1», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Emilia_Wickstead_AW26_Commercial_Looks-6602009_12b4266c-cee3-4a38-8743-3ad3ae7ced55_2048x2048.jpg?v=1773931943)"></div><div class="name">Платье «Название 2», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Celeste_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_2048x2048.jpg?v=1790847160)"></div><div class="name">Жакет «Название 3», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Wickstead_AW26_LOOK_14_2048x2048.jpg?v=1773922071)"></div><div class="name">Юбка «Название 4», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Rain_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_Emilia_Wickstead_2048x2048.jpg?v=1787225031)"></div><div class="name">Блуза «Название 5», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Rain_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_Front_View_2048x2048.jpg?v=1786542401)"></div><div class="name">Пальто «Название 6», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/9608_3_2048x2048.jpg?v=1788861617)"></div><div class="name">Платье «Название 7», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/preview_images/9e8c87ae90794d5185c0a2594c944f7c.thumbnail.0000000000_small.jpg?v=1791802720)"></div><div class="name">Брюки «Название 8», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/9525_3_2048x2048.jpg?v=1788448111)"></div><div class="name">Топ «Название 9», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Cyralisse_Dress_in_Chocolate_Lilac_Breezy_Poppy_Mikado_Font_View_2048x2048.jpg?v=1786542608)"></div><div class="name">Платье «Название 10», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Harlow_Dress_in_Silver_Metallic_Cloque_Emilia_Wickstead_2048x2048.jpg?v=1786542487)"></div><div class="name">Тренч «Название 11», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Harlow_Dress_in_Silver_Metallic_Cloque_Front_View_2048x2048.jpg?v=1786542522)"></div><div class="name">Костюм «Название 12», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+    </div>
+    <div class="pager"><a href="#" class="cur">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">10</a><a href="#">Далее ›</a></div>
+  </section>
+</main>
+<footer class="wrap">
+  <div class="fgrid">
+    <div><h3>О бренде</h3><ul><li><a href="o-brende.html">О Gromova</a></li><li><a href="o-brende.html#atelier">Ателье</a></li><li><a href="#">Журнал</a></li><li><a href="#">Бутик</a></li><li><a href="#">Вакансии</a></li></ul></div>
+    <div><h3>Покупателям</h3><ul><li><a href="pokupatelyam.html#delivery">Доставка и возврат</a></li><li><a href="pokupatelyam.html#sizes">Таблица размеров</a></li><li><a href="pokupatelyam.html#pay">Оплата</a></li><li><a href="pokupatelyam.html#faq">Вопросы и ответы</a></li><li><a href="pokupatelyam.html#contacts">Связаться с нами</a></li></ul></div>
+    <div><h3>Документы</h3><ul><li><a href="#">Политика конфиденциальности</a></li><li><a href="#">Политика cookies</a></li><li><a href="#">Оферта</a></li></ul></div>
+    <div class="news"><h3>Подписка</h3><div>Новости коллекций, закрытые показы и предзаказ.</div>
+      <form onsubmit="event.preventDefault();this.querySelector('p')?.remove();this.insertAdjacentHTML('afterend','<p>Спасибо, вы подписаны.</p>')">
+        <input type="email" placeholder="Электронная почта" required aria-label="Электронная почта"><button type="submit">Подписаться</button></form>
+      <p>Нажимая «Подписаться», вы соглашаетесь с политикой конфиденциальности.</p></div>
+  </div>
+  <div class="fbot">
+    <div class="soc"><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">Telegram</a></div>
+    <label>Доставка: <select aria-label="Страна"><option>Россия / ₽</option><option>Казахстан / ₸</option><option>ОАЭ / AED</option><option>Европа / €</option></select></label>
+    <div>© Gromova 2026</div>
+  </div>
+</footer>
+<div class="draft">Черновик · фото временные (образец), тексты заменяются</div>
+<script>
+  const car=document.getElementById('car');
+  if(car){const step=()=>car.querySelector('.card').getBoundingClientRect().width+18;
+  document.getElementById('next').onclick=()=>car.scrollBy({left:step(),behavior:'smooth'});
+  document.getElementById('prev').onclick=()=>car.scrollBy({left:-step(),behavior:'smooth'});}
+  document.getElementById('burger').onclick=()=>document.getElementById('nav').classList.toggle('open');
+</script>
+</body>
+</html>
