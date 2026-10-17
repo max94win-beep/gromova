@@ -13,6 +13,8 @@ NAV_FILES = ['novinki.html', 'bestsellery.html', 'katalog.html', 'pokupatelyam.h
 NAV = [(T('nav', f'{i+1}.label'), NAV_FILES[i], 'red' if i == 0 else '') for i in range(5)]
 CATS = ['Платья', 'Вечерние платья', 'Блузы и топы', 'Трикотаж', 'Юбки', 'Брюки', 'Жакеты и пальто', 'Курортная коллекция', 'Свадебная линия', 'Для дома']
 CARDS = [(T('cards', f'{i+1}.name'), T('cards', f'{i+1}.price'), I('cards', f'{i+1}.image')) for i in range(12)]
+def product_href(i):            # i — номер товара 1..12
+    return f'tovar-{i}.html'
 IG = list(C.get('home', {}).get('ig.images', []) or [c[2] for c in CARDS[:6]])
 for _i in range(6):                                   # из Figma приходят ig.image.1 … ig.image.6
     _v = C.get('home', {}).get(f'ig.image.{_i+1}')
@@ -143,6 +145,20 @@ footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;
 .fbot select{border:1px solid var(--line);background:none;font:inherit;padding:6px 10px;color:inherit}
 @media (max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.fgrid{grid-template-columns:1fr}}
+.product{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,64px);align-items:start;padding-top:24px}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gallery .pvideo{grid-column:1/-1;aspect-ratio:16/9;background:#000}
+.gallery .pvideo iframe,.gallery video.pvideo{width:100%;height:100%;border:0;display:block}
+.pinfo{position:sticky;top:150px}
+.pinfo h1{font-size:clamp(26px,3vw,40px)}
+.pprice{font-size:18px;margin:10px 0 22px;font-variant-numeric:tabular-nums}
+.psizes{display:grid;gap:10px;margin-bottom:18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{min-width:48px;padding:9px 12px;border:1px solid var(--line);background:none;font:inherit;font-size:12px;letter-spacing:.1em;cursor:pointer;color:inherit}
+.chips button.on,.chips button:hover{border-color:var(--fg)}
+.btn.wide{display:block;text-align:center;width:100%;border:1px solid var(--fg);cursor:pointer;font-family:inherit;margin-bottom:26px}
+.pinfo details p{color:#3a3935;margin:10px 0 4px}
+@media (max-width:860px){.product{grid-template-columns:1fr}.pinfo{position:static}}
 .draft{position:fixed;left:12px;bottom:12px;z-index:30;background:rgba(255,255,255,.85);border:1px solid var(--line);padding:6px 10px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 """
 
@@ -213,16 +229,16 @@ def footer():
 '''
 
 LABEL = 'временное фото (образец)'
-def card(name, price, img, tag=''):
+def card(name, price, img, tag='', href='#'):
     t = f'<span class="tag">{tag}</span>' if tag else ''
-    return (f'<a class="card" href="#"><div class="ph r23" data-label="{LABEL}" style="background-image:url({img})">{t}</div>'
+    return (f'<a class="card" href="{href}"><div class="ph r23" data-label="{LABEL}" style="background-image:url({img})">{t}</div>'
             f'<div class="name">{name}</div><div class="price">{price}</div>'
             f'<div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>')
 def ph(cls, img, label=LABEL, extra=''):
     return f'<div class="ph {cls}" data-label="{label}" style="background-image:url({img})">{extra}</div>'
 
 def page_index():
-    cards = '\n      '.join(card(n, p, i) for n, p, i in CARDS)
+    cards = '\n      '.join(card(n, p, i, href=product_href(k + 1)) for k, (n, p, i) in enumerate(CARDS))
     ig = ''.join(f'<a href="#" class="ph r11" data-label="{LABEL}" style="background-image:url({u})"></a>' for u in IG[:6])
     body = f'''<main>
   <section class="hero" style="padding:0">
@@ -252,7 +268,7 @@ def page_index():
 def page_collection(file, sec, offset, tag):
     title, intro = T(sec, 'title'), T(sec, 'intro')
     n = 24
-    cards = '\n      '.join(card(CARDS[i % 12][0].replace(f'Название {i % 12 + 1}', f'Название {i+1}'), CARDS[i % 12][1], POOL[(i + offset) % len(POOL)], tag) for i in range(n))
+    cards = '\n      '.join(card(CARDS[i % 12][0], CARDS[i % 12][1], POOL[(i + offset) % len(POOL)], tag, href=product_href(i % 12 + 1)) for i in range(n))
     body = f'''<main class="wrap">
   <div class="crumbs"><a href="index.html">Главная</a> &nbsp;/&nbsp; {title}</div>
   <div class="page-head"><h1>{title}</h1><p>{intro}</p></div>
@@ -270,7 +286,7 @@ def page_collection(file, sec, offset, tag):
 
 def page_katalog():
     tiles = ''.join(f'<a href="novinki.html">{ph("r23", POOL[(i*3) % len(POOL)])}<div class="lbl">{c}</div></a>' for i, c in enumerate(CATS))
-    cards = '\n      '.join(card(CARDS[i][0], CARDS[i][1], POOL[(i + 7) % len(POOL)]) for i in range(12))
+    cards = '\n      '.join(card(CARDS[i][0], CARDS[i][1], POOL[(i + 7) % len(POOL)], href=product_href(i + 1)) for i in range(12))
     body = f'''<main class="wrap">
   <div class="crumbs"><a href="index.html">Главная</a> &nbsp;/&nbsp; {T('katalog', 'title')}</div>
   <div class="page-head"><h1>{T('katalog', 'title')}</h1><p>{T('katalog', 'intro')}</p></div>
@@ -345,6 +361,53 @@ def page_about():
 '''
     return head(f'{T("about", "title")} — {LOGO}', f'{LOGO}: о бренде, философия, ателье.') + header('o-brende.html') + body + footer()
 
+def video_embed(url):
+    """ссылка на видео -> встраивание (YouTube, VK Video, RuTube, прямой mp4); пусто -> ничего"""
+    import re as _re
+    u = (url or '').strip()
+    if not u or not u.startswith('http'): return ''
+    m = _re.search(r'(?:youtu\.be/|youtube\.com/(?:watch\?v=|shorts/|embed/))([\w-]{6,})', u)
+    if m: src = f'https://www.youtube.com/embed/{m.group(1)}'
+    elif 'rutube.ru/video/' in u: src = u.replace('rutube.ru/video/', 'rutube.ru/play/embed/')
+    elif 'vk.com/video' in u or 'vkvideo.ru/video' in u:
+        m = _re.search(r'video(-?\d+)_(\d+)', u); src = f'https://vk.com/video_ext.php?oid={m.group(1)}&id={m.group(2)}' if m else u
+    elif u.lower().split('?')[0].endswith(('.mp4', '.webm', '.mov')):
+        return f'<video class="pvideo" controls playsinline src="{u}"></video>'
+    else: src = u
+    return f'<div class="pvideo"><iframe src="{src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>'
+
+def page_product(i):
+    name, price = T('cards', f'{i}.name'), T('cards', f'{i}.price')
+    img1, img2 = I('cards', f'{i}.image'), I('cards', f'{i}.image2')
+    desc, comp = T('cards', f'{i}.description'), T('cards', f'{i}.composition')
+    video = video_embed(I('cards', f'{i}.video'))
+    gallery = ph('r23', img1) + (ph('r23', img2) if img2 else '') + video
+    others = ''.join(card(CARDS[k][0], CARDS[k][1], CARDS[k][2], href=product_href(k + 1)) for k in range(12) if k + 1 != i)[:0]
+    rel = '\n      '.join(card(CARDS[k % 12][0], CARDS[k % 12][1], CARDS[k % 12][2], href=product_href(k % 12 + 1)) for k in range(i, i + 4))
+    body = f'''<main class="wrap">
+  <div class="crumbs"><a href="index.html">Главная</a> &nbsp;/&nbsp; <a href="katalog.html">{T('katalog', 'title')}</a> &nbsp;/&nbsp; {name}</div>
+  <section class="product">
+    <div class="gallery">{gallery}</div>
+    <div class="pinfo">
+      <h1>{name}</h1>
+      <div class="pprice">{price}</div>
+      <div class="psizes"><div class="cap">Размер</div><div class="chips"><button>XS</button><button>S</button><button class="on">M</button><button>L</button></div><a class="cap" href="pokupatelyam.html#sizes">Таблица размеров</a></div>
+      <button class="btn solid wide">В корзину</button>
+      <details open><summary>Описание</summary><p>{desc}</p></details>
+      <details><summary>Состав и уход</summary><p>{comp}</p></details>
+      <details><summary>Доставка и возврат</summary><p>Доставка по Москве и России, возврат в течение — дней. <a href="pokupatelyam.html#delivery">Подробнее</a></p></details>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <div class="sec-head"><h2>Вам может понравиться</h2><a class="cap" href="katalog.html">Весь каталог →</a></div>
+    <div class="grid">
+      {rel}
+    </div>
+  </section>
+</main>
+'''
+    return head(f'{name} — {LOGO}', f'{LOGO}: {name}.') + header('katalog.html') + body + footer()
+
 pages = {
     'index.html': page_index(),
     'novinki.html': page_collection('novinki.html', 'novinki', 0, 'New'),
@@ -353,6 +416,7 @@ pages = {
     'pokupatelyam.html': page_pokupatelyam(),
     'o-brende.html': page_about(),
 }
+for _i in range(1, 13): pages[product_href(_i)] = page_product(_i)
 for f, h in pages.items():
     open(os.path.join(HERE, f), 'w', encoding='utf-8').write(h)
 print('built', ', '.join(pages))

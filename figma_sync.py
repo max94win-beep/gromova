@@ -28,7 +28,7 @@ doc = get(f'{API}/files/{KEY}')
 content = json.load(open(os.path.join(HERE, 'content.json'), encoding='utf-8'))
 texts, images = {}, {}   # key -> value / node id
 
-def walk(node, section):
+def walk(node, section, prefix=''):
     name = (node.get('name') or '').strip()
     t = node.get('type')
     if section is None:
@@ -39,15 +39,21 @@ def walk(node, section):
         return
     key = name
     if key.startswith(section + '.'): key = key[len(section) + 1:]
+    if t in ('GROUP', 'FRAME', 'SECTION') and node.get('children'):
+        # вложенная папка (например «Товар 3» или «3») -> префикс ключа «3.»
+        m = re.search(r'(\d+)\s*$', key)
+        sub = (prefix + (m.group(1) if m else key) + '.') if not key.startswith('_') else prefix
+        for ch in node.get('children', []): walk(ch, section, sub)
+        return
+    key = prefix + key
     if key.startswith('_'):            # служебные подписи (_label, _title, _hint)
         pass
     elif t == 'TEXT' and re.match(r'^[\w.\-]+$', key):
         texts[(section, key)] = node.get('characters', '').strip()
-    elif re.search(r'(^|\.)image(\.\d+)?$', key):   # hero.image, block.1.image, ig.image.3
+    elif re.search(r'(^|\.)image\d*(\.\d+)?$', key):   # hero.image, block.1.image, ig.image.3, 5.image2
         refs = [f.get('imageRef') for f in node.get('fills', []) if isinstance(f, dict) and f.get('type') == 'IMAGE']
         if refs:
             images[(section, key)] = node['id']; imagerefs[(section, key)] = refs[0]
-    for ch in node.get('children', []): walk(ch, section)
 
 imagerefs = {}
 for page in doc['document'].get('children', []): walk(page, None)
