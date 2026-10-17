@@ -47,7 +47,8 @@ nav.main a.red{color:#b3261e}
 }
 
 /* placeholder image blocks */
-.ph{position:relative;background:linear-gradient(135deg,var(--ph),var(--ph2));overflow:hidden;color:var(--muted)}
+.ph{position:relative;background:linear-gradient(135deg,var(--ph),var(--ph2)) center/cover no-repeat;overflow:hidden;color:var(--muted);display:block}
+.ph::after{background:rgba(247,245,241,.7);padding:2px 6px}
 .ph::after{content:attr(data-label);position:absolute;inset:auto 10px 10px auto;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.85}
 .ph.r169{aspect-ratio:2880/1770}
 .ph.r23{aspect-ratio:2/3}
@@ -153,7 +154,7 @@ footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;
 <main>
   <!-- 1. hero -->
   <section class="hero" style="padding:0">
-    <div class="ph r169" data-label="Фото 1 · главный баннер · 2880×1770"></div>
+    <div class="ph r169" data-label="временное фото · главный баннер · 2880×1770" style="background-image:url(https://loremflickr.com/1920/1180/fashion,runway?lock=1)"></div>
     <div class="txt">
       <h1>Осень-Зима 2026</h1>
       <a class="btn" href="#">Смотреть коллекцию</a>
@@ -168,18 +169,18 @@ footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;
     </div>
     <div class="car" id="car">
       <!-- 12 карточек -->
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 1 · 1400×2100"></div><div class="name">Платье «Название 1», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 2 · 1400×2100"></div><div class="name">Платье «Название 2», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 3 · 1400×2100"></div><div class="name">Платье «Название 3», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 4 · 1400×2100"></div><div class="name">Платье «Название 4», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 5 · 1400×2100"></div><div class="name">Жакет «Название 5», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 6 · 1400×2100"></div><div class="name">Юбка «Название 6», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 7 · 1400×2100"></div><div class="name">Блуза «Название 7», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 8 · 1400×2100"></div><div class="name">Пальто «Название 8», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 9 · 1400×2100"></div><div class="name">Платье «Название 9», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 10 · 1400×2100"></div><div class="name">Брюки «Название 10», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 11 · 1400×2100"></div><div class="name">Платье «Название 11», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="Фото товара 12 · 1400×2100"></div><div class="name">Топ «Название 12», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=2)"></div><div class="name">Платье «Название 1», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=3)"></div><div class="name">Платье «Название 2», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=4)"></div><div class="name">Платье «Название 3», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=5)"></div><div class="name">Платье «Название 4», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=6)"></div><div class="name">Жакет «Название 5», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=7)"></div><div class="name">Юбка «Название 6», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=8)"></div><div class="name">Блуза «Название 7», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=9)"></div><div class="name">Пальто «Название 8», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=10)"></div><div class="name">Платье «Название 9», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=11)"></div><div class="name">Брюки «Название 10», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=12)"></div><div class="name">Платье «Название 11», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото · 1400×2100" style="background-image:url(https://loremflickr.com/800/1200/fashion,dress,model?lock=13)"></div><div class="name">Топ «Название 12», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
     </div>
   </section>
 
@@ -187,11 +188,11 @@ footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;
   <section class="wrap" style="padding-top:0">
     <div class="two">
       <div class="cell">
-        <div class="ph r11" data-label="Фото 2 · квадрат · 1360×1360"></div>
+        <div class="ph r11" data-label="временное фото · квадрат · 1360×1360" style="background-image:url(https://loremflickr.com/1000/1000/fashion,dress?lock=14)"></div>
         <div class="txt"><h2>Осень-Зима 2026</h2><a class="btn" href="#">Смотреть</a></div>
       </div>
       <div class="cell">
-        <div class="ph r11" data-label="Фото 3 · квадрат · 1360×1360"></div>
+        <div class="ph r11" data-label="временное фото · квадрат · 1360×1360" style="background-image:url(https://loremflickr.com/1000/1000/fashion,dress?lock=15)"></div>
         <div class="txt"><h2>Платья Gromova</h2><a class="btn" href="#">Смотреть</a></div>
       </div>
     </div>
@@ -202,8 +203,8 @@ footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;
     <h2>Следите за нами</h2>
     <div class="handle">@gromova</div>
     <div class="ig">
-      <a class="ph r11" href="#" data-label="IG 1"></a><a class="ph r11" href="#" data-label="IG 2"></a><a class="ph r11" href="#" data-label="IG 3"></a>
-      <a class="ph r11" href="#" data-label="IG 4"></a><a class="ph r11" href="#" data-label="IG 5"></a><a class="ph r11" href="#" data-label="IG 6"></a>
+      <a href="#" class="ph r11" data-label="временное фото" style="background-image:url(https://loremflickr.com/600/600/fashion,style?lock=16)"></a><a href="#" class="ph r11" data-label="временное фото" style="background-image:url(https://loremflickr.com/600/600/fashion,style?lock=17)"></a><a href="#" class="ph r11" data-label="временное фото" style="background-image:url(https://loremflickr.com/600/600/fashion,style?lock=18)"></a>
+      <a href="#" class="ph r11" data-label="временное фото" style="background-image:url(https://loremflickr.com/600/600/fashion,style?lock=19)"></a><a href="#" class="ph r11" data-label="временное фото" style="background-image:url(https://loremflickr.com/600/600/fashion,style?lock=20)"></a><a href="#" class="ph r11" data-label="временное фото" style="background-image:url(https://loremflickr.com/600/600/fashion,style?lock=21)"></a>
     </div>
   </section>
 </main>
@@ -239,7 +240,7 @@ footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;
   </div>
 </footer>
 
-<div class="draft">Черновик · фото и тексты заменяются</div>
+<div class="draft">Черновик · фото временные (сток), тексты заменяются</div>
 
 <script>
   const car=document.getElementById('car');
