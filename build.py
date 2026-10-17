@@ -1,16 +1,21 @@
-"""Генератор страниц макета Gromova. python3 build.py -> index.html + 5 разделов.
-Фото временные (ссылки на CDN образца из ../ew_images.json), тексты — заглушки под замену."""
-import json, os, re
+"""Генератор страниц макета Gromova: python3 build.py -> index.html + 5 разделов.
+Содержимое (тексты, картинки) — из content.json; его обновляет figma_sync.py из Figma.
+Фото временные (ссылки на CDN образца), тексты — заглушки под замену."""
+import json, os, html as H
 HERE = os.path.dirname(os.path.abspath(__file__))
-IMG = json.load(open(os.path.join(HERE, '..', 'ew_images.json')))
-HERO = [u for u in IMG['hero'] if '2048x2048' in u][0]
-PROD = [u for u in IMG['prod'] if '{width}' not in u]
-ED = [u for u in IMG['ed'] if '2048x2048' in u][:2]
+C = json.load(open(os.path.join(HERE, 'content.json'), encoding='utf-8'))
+def T(sec, key, default=''):
+    return H.escape(str(C.get(sec, {}).get(key, default)))
+def I(sec, key, default=''):
+    return str(C.get(sec, {}).get(key, default))
 
-NAV = [('Новинки', 'novinki.html', 'red'), ('Бестселлеры', 'bestsellery.html', ''), ('Каталог', 'katalog.html', ''),
-       ('Покупателям', 'pokupatelyam.html', ''), ('О бренде', 'o-brende.html', '')]
+NAV_FILES = ['novinki.html', 'bestsellery.html', 'katalog.html', 'pokupatelyam.html', 'o-brende.html']
+NAV = [(T('nav', f'{i+1}.label'), NAV_FILES[i], 'red' if i == 0 else '') for i in range(5)]
 CATS = ['Платья', 'Вечерние платья', 'Блузы и топы', 'Трикотаж', 'Юбки', 'Брюки', 'Жакеты и пальто', 'Курортная коллекция', 'Свадебная линия', 'Для дома']
-KINDS = ['Платье', 'Платье', 'Жакет', 'Юбка', 'Блуза', 'Пальто', 'Платье', 'Брюки', 'Топ', 'Платье', 'Тренч', 'Костюм']
+CARDS = [(T('cards', f'{i+1}.name'), T('cards', f'{i+1}.price'), I('cards', f'{i+1}.image')) for i in range(12)]
+IG = C.get('home', {}).get('ig.images', []) or [c[2] for c in CARDS[:6]]
+POOL = [c[2] for c in CARDS] + list(IG)
+LOGO = T('site', 'logo', 'Gromova')
 
 CSS = r"""
 :root{--bg:#dad4c7;--fg:#1e1f1d;--muted:#625e57;--line:#c6bcad;--ph:#d3c9ba;--ph2:#c2b7a6;
@@ -72,7 +77,6 @@ section{padding-block:clamp(36px,6vw,72px)}
 .follow .handle{color:var(--muted);letter-spacing:.14em;font-size:12px;margin-bottom:22px}
 .ig{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 @media (max-width:760px){.ig{grid-template-columns:repeat(3,1fr)}}
-/* страницы разделов */
 .crumbs{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:22px}
 .crumbs a:hover{color:var(--fg)}
 .page-head{padding-block:28px 10px}
@@ -83,7 +87,6 @@ section{padding-block:clamp(36px,6vw,72px)}
 .toolbar .filters button{background:none;border:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;padding:0}
 .toolbar select{border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 18px}
-.grid .card .ph{position:relative}
 @media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:760px){.grid{grid-template-columns:repeat(2,1fr);gap:14px 10px}}
 .pager{display:flex;justify-content:center;gap:18px;margin-top:40px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
@@ -110,7 +113,7 @@ details[open] summary::after{content:"–"}
 @media (max-width:860px){.info{grid-template-columns:1fr}.info aside{position:static;grid-template-columns:repeat(2,1fr)}}
 .about-hero{position:relative}
 .about-hero .txt{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
-.about-hero h1{font-size:clamp(36px,6vw,80px);color:var(--bg);text-shadow:0 1px 20px rgba(0,0,0,.25)}
+.about-hero h1{font-size:clamp(36px,6vw,80px);color:#fff;text-shadow:0 1px 20px rgba(0,0,0,.35)}
 .lead{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);max-width:34ch;margin:0 auto;text-align:center;line-height:1.35}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
 .split.rev .ph{order:2}
@@ -156,14 +159,14 @@ def head(title, desc):
 
 def header(active):
     links = ''.join(f'<a href="{h}" class="{" ".join(c for c in [cls, "active" if h == active else ""] if c)}">{t}</a>\n    ' for t, h, cls in NAV)
-    return f'''<div class="ann">Осень-зима 2026: новая коллекция уже в продаже</div>
+    return f'''<div class="ann">{T('site', 'announcement')}</div>
 <header>
   <div class="hd">
     <div class="left">
       <button class="ico burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span class="txt">Меню</span></button>
       <a class="ico" href="katalog.html"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="txt">Поиск</span></a>
     </div>
-    <a class="logo" href="index.html">Gromova</a>
+    <a class="logo" href="index.html">{LOGO}</a>
     <div class="right">
       <a class="ico" href="#"><span class="txt">RU / ₽</span></a>
       <a class="ico" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg><span class="txt">Аккаунт</span></a>
@@ -175,9 +178,10 @@ def header(active):
 </header>
 '''
 
-FOOTER = '''<footer class="wrap">
+def footer():
+    return f'''<footer class="wrap">
   <div class="fgrid">
-    <div><h3>О бренде</h3><ul><li><a href="o-brende.html">О Gromova</a></li><li><a href="o-brende.html#atelier">Ателье</a></li><li><a href="#">Журнал</a></li><li><a href="#">Бутик</a></li><li><a href="#">Вакансии</a></li></ul></div>
+    <div><h3>О бренде</h3><ul><li><a href="o-brende.html">О {LOGO}</a></li><li><a href="o-brende.html#atelier">Ателье</a></li><li><a href="#">Журнал</a></li><li><a href="#">Бутик</a></li><li><a href="#">Вакансии</a></li></ul></div>
     <div><h3>Покупателям</h3><ul><li><a href="pokupatelyam.html#delivery">Доставка и возврат</a></li><li><a href="pokupatelyam.html#sizes">Таблица размеров</a></li><li><a href="pokupatelyam.html#pay">Оплата</a></li><li><a href="pokupatelyam.html#faq">Вопросы и ответы</a></li><li><a href="pokupatelyam.html#contacts">Связаться с нами</a></li></ul></div>
     <div><h3>Документы</h3><ul><li><a href="#">Политика конфиденциальности</a></li><li><a href="#">Политика cookies</a></li><li><a href="#">Оферта</a></li></ul></div>
     <div class="news"><h3>Подписка</h3><div>Новости коллекций, закрытые показы и предзаказ.</div>
@@ -188,69 +192,68 @@ FOOTER = '''<footer class="wrap">
   <div class="fbot">
     <div class="soc"><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">Telegram</a></div>
     <label>Доставка: <select aria-label="Страна"><option>Россия / ₽</option><option>Казахстан / ₸</option><option>ОАЭ / AED</option><option>Европа / €</option></select></label>
-    <div>© Gromova 2026</div>
+    <div>{T('site', 'copyright')}</div>
   </div>
 </footer>
 <div class="draft">Черновик · фото временные (образец), тексты заменяются</div>
 <script>
   const car=document.getElementById('car');
-  if(car){const step=()=>car.querySelector('.card').getBoundingClientRect().width+18;
-  document.getElementById('next').onclick=()=>car.scrollBy({left:step(),behavior:'smooth'});
-  document.getElementById('prev').onclick=()=>car.scrollBy({left:-step(),behavior:'smooth'});}
+  if(car){{const step=()=>car.querySelector('.card').getBoundingClientRect().width+18;
+  document.getElementById('next').onclick=()=>car.scrollBy({{left:step(),behavior:'smooth'}});
+  document.getElementById('prev').onclick=()=>car.scrollBy({{left:-step(),behavior:'smooth'}});}}
   document.getElementById('burger').onclick=()=>document.getElementById('nav').classList.toggle('open');
 </script>
 </body>
 </html>
 '''
 
-def card(i, img, tag=''):
-    kind = KINDS[i % len(KINDS)]
+LABEL = 'временное фото (образец)'
+def card(name, price, img, tag=''):
     t = f'<span class="tag">{tag}</span>' if tag else ''
-    return (f'<a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url({img})">{t}</div>'
-            f'<div class="name">{kind} «Название {i+1}», ткань</div><div class="price">— ₽</div>'
+    return (f'<a class="card" href="#"><div class="ph r23" data-label="{LABEL}" style="background-image:url({img})">{t}</div>'
+            f'<div class="name">{name}</div><div class="price">{price}</div>'
             f'<div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>')
-
-def ph(cls, img, label='временное фото (образец)', extra=''):
+def ph(cls, img, label=LABEL, extra=''):
     return f'<div class="ph {cls}" data-label="{label}" style="background-image:url({img})">{extra}</div>'
 
-# ---------- index ----------
 def page_index():
-    cards = '\n      '.join(card(i, PROD[i]) for i in range(12))
-    ig = ''.join(f'<a href="#" class="ph r11" data-label="временное фото (образец)" style="background-image:url({PROD[12+i]})"></a>' for i in range(6))
+    cards = '\n      '.join(card(n, p, i) for n, p, i in CARDS)
+    ig = ''.join(f'<a href="#" class="ph r11" data-label="{LABEL}" style="background-image:url({u})"></a>' for u in IG[:6])
     body = f'''<main>
   <section class="hero" style="padding:0">
-    {ph('r169', HERO, 'временное фото (образец) · главный баннер · 2880×1770')}
-    <div class="txt"><h1>Осень-Зима 2026</h1><a class="btn" href="novinki.html">Смотреть коллекцию</a></div>
+    {ph('r169', I('home', 'hero.image'), LABEL + ' · главный баннер · 2880×1770')}
+    <div class="txt"><h1>{T('home', 'hero.title')}</h1><a class="btn" href="novinki.html">{T('home', 'hero.button')}</a></div>
   </section>
   <section class="wrap">
-    <div class="sec-head"><h2>Новый сезон</h2><div class="arrows"><button id="prev" aria-label="Назад">‹</button><button id="next" aria-label="Вперёд">›</button></div></div>
+    <div class="sec-head"><h2>{T('home', 'new.title')}</h2><div class="arrows"><button id="prev" aria-label="Назад">‹</button><button id="next" aria-label="Вперёд">›</button></div></div>
     <div class="car" id="car">
       {cards}
     </div>
   </section>
   <section class="wrap" style="padding-top:0">
     <div class="two">
-      <div class="cell">{ph('r11', ED[0])}<div class="txt"><h2>Осень-Зима 2026</h2><a class="btn" href="novinki.html">Смотреть</a></div></div>
-      <div class="cell">{ph('r11', ED[1])}<div class="txt"><h2>Платья Gromova</h2><a class="btn" href="katalog.html">Смотреть</a></div></div>
+      <div class="cell">{ph('r11', I('home', 'block.1.image'))}<div class="txt"><h2>{T('home', 'block.1.title')}</h2><a class="btn" href="novinki.html">{T('home', 'block.1.button')}</a></div></div>
+      <div class="cell">{ph('r11', I('home', 'block.2.image'))}<div class="txt"><h2>{T('home', 'block.2.title')}</h2><a class="btn" href="katalog.html">{T('home', 'block.2.button')}</a></div></div>
     </div>
   </section>
   <section class="wrap follow">
-    <h2>Следите за нами</h2><div class="handle">@gromova</div>
+    <h2>{T('home', 'follow.title')}</h2><div class="handle">{T('site', 'instagram')}</div>
     <div class="ig">{ig}</div>
   </section>
 </main>
 '''
-    return head('Gromova — черновик главной', 'Gromova. Макет главной страницы: структура, фото и тексты заменяются.') + header('index.html') + body + FOOTER
+    return head(f'{LOGO} — черновик главной', f'{LOGO}. Макет главной страницы: структура, фото и тексты заменяются.') + header('index.html') + body + footer()
 
-# ---------- коллекции ----------
-def page_collection(file, title, intro, imgs, tag=''):
-    cards = '\n      '.join(card(i, imgs[i % len(imgs)], tag) for i in range(len(imgs)))
+def page_collection(file, sec, offset, tag):
+    title, intro = T(sec, 'title'), T(sec, 'intro')
+    n = 24
+    cards = '\n      '.join(card(CARDS[i % 12][0].replace(f'Название {i % 12 + 1}', f'Название {i+1}'), CARDS[i % 12][1], POOL[(i + offset) % len(POOL)], tag) for i in range(n))
     body = f'''<main class="wrap">
   <div class="crumbs"><a href="index.html">Главная</a> &nbsp;/&nbsp; {title}</div>
   <div class="page-head"><h1>{title}</h1><p>{intro}</p></div>
   <div class="toolbar">
     <div class="filters"><button>Категория</button><button>Размер</button><button>Цвет</button><button>Цена</button></div>
-    <div>{len(imgs)} товаров &nbsp;·&nbsp; <select aria-label="Сортировка"><option>Сначала новые</option><option>По цене: сначала дешевле</option><option>По цене: сначала дороже</option></select></div>
+    <div>{n} товаров &nbsp;·&nbsp; <select aria-label="Сортировка"><option>Сначала новые</option><option>По цене: сначала дешевле</option><option>По цене: сначала дороже</option></select></div>
   </div>
   <div class="grid">
       {cards}
@@ -258,14 +261,14 @@ def page_collection(file, title, intro, imgs, tag=''):
   <div class="pager"><a href="#" class="cur">1</a><a href="#">2</a><a href="#">3</a><a href="#">Далее ›</a></div>
 </main>
 '''
-    return head(f'{title} — Gromova', f'Gromova: {title}. Макет страницы раздела.') + header(file) + body + FOOTER
+    return head(f'{title} — {LOGO}', f'{LOGO}: {title}. Макет страницы раздела.') + header(file) + body + footer()
 
 def page_katalog():
-    tiles = ''.join(f'<a href="novinki.html">{ph("r23", PROD[(i*3) % len(PROD)], "временное фото (образец)")}<div class="lbl">{c}</div></a>' for i, c in enumerate(CATS))
-    cards = '\n      '.join(card(i, PROD[(i+20) % len(PROD)]) for i in range(12))
+    tiles = ''.join(f'<a href="novinki.html">{ph("r23", POOL[(i*3) % len(POOL)])}<div class="lbl">{c}</div></a>' for i, c in enumerate(CATS))
+    cards = '\n      '.join(card(CARDS[i][0], CARDS[i][1], POOL[(i + 7) % len(POOL)]) for i in range(12))
     body = f'''<main class="wrap">
-  <div class="crumbs"><a href="index.html">Главная</a> &nbsp;/&nbsp; Каталог</div>
-  <div class="page-head"><h1>Каталог</h1><p>Все линии Gromova: от повседневных платьев до вечерних и свадебной коллекции. Выберите раздел или смотрите все модели ниже.</p></div>
+  <div class="crumbs"><a href="index.html">Главная</a> &nbsp;/&nbsp; {T('katalog', 'title')}</div>
+  <div class="page-head"><h1>{T('katalog', 'title')}</h1><p>{T('katalog', 'intro')}</p></div>
   <section style="padding-top:18px"><div class="cats">{tiles}</div></section>
   <section style="padding-top:0">
     <div class="sec-head"><h2>Все модели</h2><a class="cap" href="novinki.html">Смотреть новинки →</a></div>
@@ -277,7 +280,7 @@ def page_katalog():
   </section>
 </main>
 '''
-    return head('Каталог — Gromova', 'Gromova: каталог. Макет страницы.') + header('katalog.html') + body + FOOTER
+    return head(f'{T("katalog", "title")} — {LOGO}', f'{LOGO}: каталог. Макет страницы.') + header('katalog.html') + body + footer()
 
 def page_pokupatelyam():
     body = f'''<main class="wrap">
@@ -305,45 +308,42 @@ def page_pokupatelyam():
       <p>Рекомендации по уходу указаны на ярлыке каждого изделия. Шёлк и шерсть — только сухая чистка; хранить на плечиках в чехле.</p>
       <h2 id="faq">Вопросы и ответы</h2>
       <details><summary>Можно ли примерить перед покупкой?</summary><p>Да, в бутике и при курьерской доставке по Москве (частичный выкуп).</p></details>
-      <details><summary>Шьёте ли на заказ?</summary><p>Да, индивидуальный пошив и подгонка по фигуре в ателье Gromova. Срок — от — недель.</p></details>
+      <details><summary>Шьёте ли на заказ?</summary><p>Да, индивидуальный пошив и подгонка по фигуре в ателье {LOGO}. Срок — от — недель.</p></details>
       <details><summary>Как отследить заказ?</summary><p>После отправки вы получите трек-номер на почту и в мессенджер.</p></details>
       <details><summary>Есть ли подарочные сертификаты?</summary><p>Да, электронные сертификаты на любую сумму.</p></details>
       <h2 id="contacts">Контакты</h2>
-      <p>Телефон: — &nbsp;·&nbsp; Почта: — &nbsp;·&nbsp; Telegram: @gromova<br>Бутик: адрес —, ежедневно 11:00–21:00.</p>
+      <p>Телефон: — &nbsp;·&nbsp; Почта: — &nbsp;·&nbsp; Telegram: {T('site', 'instagram')}<br>Бутик: адрес —, ежедневно 11:00–21:00.</p>
     </article>
   </section>
 </main>
 '''
-    return head('Покупателям — Gromova', 'Gromova: доставка, возврат, размеры, оплата, контакты.') + header('pokupatelyam.html') + body + FOOTER
+    return head(f'Покупателям — {LOGO}', f'{LOGO}: доставка, возврат, размеры, оплата, контакты.') + header('pokupatelyam.html') + body + footer()
 
 def page_about():
+    values = ''.join(f'<div><h3>{T("about", f"value.{i}.title")}</h3><p>{T("about", f"value.{i}.text")}</p></div>' for i in (1, 2, 3))
     body = f'''<main>
   <section class="about-hero" style="padding:0">
-    {ph('r21', HERO, 'временное фото (образец)')}
-    <div class="txt"><h1>О Gromova</h1></div>
+    {ph('r21', I('home', 'hero.image'))}
+    <div class="txt"><h1>{T('about', 'title')}</h1></div>
   </section>
-  <section class="wrap"><p class="lead">Gromova — российский бренд женской одежды. Платья и костюмы, в которых архитектурный крой встречается с мягкостью ткани. Текст заменяется.</p></section>
+  <section class="wrap"><p class="lead">{T('about', 'lead')}</p></section>
   <section class="wrap split" style="padding-top:0">
-    {ph('r43', ED[0])}
-    <div><h2>Философия</h2><p>Силуэт, пропорция, ткань. Мы делаем вещи, которые носят годами и передают дальше. Каждая модель рождается в собственном ателье и проходит несколько примерок, прежде чем попасть в коллекцию. Текст-заглушка под замену.</p><a class="btn" href="katalog.html">Смотреть коллекцию</a></div>
+    {ph('r43', I('about', 'block.1.image'))}
+    <div><h2>{T('about', 'block.1.title')}</h2><p>{T('about', 'block.1.text')}</p><a class="btn" href="katalog.html">{T('about', 'block.1.button')}</a></div>
   </section>
   <section class="wrap split rev" id="atelier" style="padding-top:0">
-    {ph('r43', ED[1])}
-    <div><h2>Ателье</h2><p>Собственное производство: конструкторы, портные, ручная отделка. Индивидуальный пошив и подгонка по фигуре, свадебная линия по записи. Текст-заглушка под замену.</p><a class="btn" href="pokupatelyam.html#contacts">Записаться</a></div>
+    {ph('r43', I('about', 'block.2.image'))}
+    <div><h2>{T('about', 'block.2.title')}</h2><p>{T('about', 'block.2.text')}</p><a class="btn" href="pokupatelyam.html#contacts">{T('about', 'block.2.button')}</a></div>
   </section>
-  <section class="wrap values" style="padding-top:0">
-    <div><h3>Натуральные ткани</h3><p>Шёлк, шерсть, хлопок от европейских и российских фабрик.</p></div>
-    <div><h3>Своё производство</h3><p>Полный цикл в Москве: от эскиза до готового изделия.</p></div>
-    <div><h3>Ограниченные тиражи</h3><p>Небольшие серии и возможность заказать модель в своём размере.</p></div>
-  </section>
+  <section class="wrap values" style="padding-top:0">{values}</section>
 </main>
 '''
-    return head('О бренде — Gromova', 'Gromova: о бренде, философия, ателье.') + header('o-brende.html') + body + FOOTER
+    return head(f'{T("about", "title")} — {LOGO}', f'{LOGO}: о бренде, философия, ателье.') + header('o-brende.html') + body + footer()
 
 pages = {
     'index.html': page_index(),
-    'novinki.html': page_collection('novinki.html', 'Новинки', 'Новые поступления сезона Осень-Зима 2026. Платья, костюмы и верхняя одежда — свежие модели каждую неделю.', PROD[:24], 'New'),
-    'bestsellery.html': page_collection('bestsellery.html', 'Бестселлеры', 'Модели, которые выбирают чаще всего: проверенные силуэты Gromova в актуальных тканях сезона.', PROD[6:30], 'Хит'),
+    'novinki.html': page_collection('novinki.html', 'novinki', 0, 'New'),
+    'bestsellery.html': page_collection('bestsellery.html', 'bestsellery', 6, 'Хит'),
     'katalog.html': page_katalog(),
     'pokupatelyam.html': page_pokupatelyam(),
     'o-brende.html': page_about(),

@@ -68,7 +68,6 @@ section{padding-block:clamp(36px,6vw,72px)}
 .follow .handle{color:var(--muted);letter-spacing:.14em;font-size:12px;margin-bottom:22px}
 .ig{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 @media (max-width:760px){.ig{grid-template-columns:repeat(3,1fr)}}
-/* страницы разделов */
 .crumbs{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:22px}
 .crumbs a:hover{color:var(--fg)}
 .page-head{padding-block:28px 10px}
@@ -79,7 +78,6 @@ section{padding-block:clamp(36px,6vw,72px)}
 .toolbar .filters button{background:none;border:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;padding:0}
 .toolbar select{border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 18px}
-.grid .card .ph{position:relative}
 @media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:760px){.grid{grid-template-columns:repeat(2,1fr);gap:14px 10px}}
 .pager{display:flex;justify-content:center;gap:18px;margin-top:40px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
@@ -106,7 +104,7 @@ details[open] summary::after{content:"–"}
 @media (max-width:860px){.info{grid-template-columns:1fr}.info aside{position:static;grid-template-columns:repeat(2,1fr)}}
 .about-hero{position:relative}
 .about-hero .txt{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
-.about-hero h1{font-size:clamp(36px,6vw,80px);color:var(--bg);text-shadow:0 1px 20px rgba(0,0,0,.25)}
+.about-hero h1{font-size:clamp(36px,6vw,80px);color:#fff;text-shadow:0 1px 20px rgba(0,0,0,.35)}
 .lead{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);max-width:34ch;margin:0 auto;text-align:center;line-height:1.35}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
 .split.rev .ph{order:2}
@@ -170,7 +168,7 @@ footer{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,64px) 28px;
       <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Rain_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_Emilia_Wickstead_2048x2048.jpg?v=1787225031)"></div><div class="name">Жакет «Название 3», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
       <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Rain_Dress_in_Mustard_Blue_Breezy_Poppy_Mikado_Front_View_2048x2048.jpg?v=1786542401)"></div><div class="name">Юбка «Название 4», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
       <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/9608_3_2048x2048.jpg?v=1788861617)"></div><div class="name">Блуза «Название 5», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
-      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/preview_images/9e8c87ae90794d5185c0a2594c944f7c.thumbnail.0000000000_small.jpg?v=1791802720)"></div><div class="name">Пальто «Название 6», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
+      <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/9573_2_2048x2048.jpg?v=1791291744)"></div><div class="name">Пальто «Название 6», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
       <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/9525_3_2048x2048.jpg?v=1788448111)"></div><div class="name">Платье «Название 7», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
       <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Cyralisse_Dress_in_Chocolate_Lilac_Breezy_Poppy_Mikado_Font_View_2048x2048.jpg?v=1786542608)"></div><div class="name">Брюки «Название 8», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
       <a class="card" href="#"><div class="ph r23" data-label="временное фото (образец)" style="background-image:url(https://emiliawickstead.com/cdn/shop/files/Harlow_Dress_in_Silver_Metallic_Cloque_Emilia_Wickstead_2048x2048.jpg?v=1786542487)"></div><div class="name">Топ «Название 9», ткань</div><div class="price">— ₽</div><div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span></div></a>
